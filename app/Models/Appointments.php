@@ -21,7 +21,7 @@ class Appointments extends Model
         'approved_at',
         'declined_at',
         'canceled_at',
-        'profileId'
+        'profile_id'
     ]; 
 
     public $casts = [
@@ -33,6 +33,6 @@ class Appointments extends Model
     ];
 
     public function profile () {
-        return $this->belongsTo(Profile::class, 'profileId'); 
+        return $this->belongsTo(Profile::class, 'profile_id'); 
     }
 }
