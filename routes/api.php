@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiAuthenticationController;
+use App\Http\Controllers\ApiMedicalRecordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,16 @@ Route::get('/public-test', function () {
     return 'public test';
 });
 
+Route::prefix('/v1.0/')->group(function () {
+    //medical records
+    Route::prefix('/medical-records')->group(function (){
+        Route::get('/', [ApiMedicalRecordController::class, 'index']); //api end point http://localhost:8000/api/v1.0/medical-records?page=1&limit=2&column=id&direction=asc note parameters is optional
+        Route::get('/all', [ApiMedicalRecordController::class, 'all']); //api end point http://localhost:8000/api/v1.0/medical-records/all
+        Route::get('/show/{id}', [ApiMedicalRecordController::class, 'show']); //api end point http://localhost:8000/api/v1.0/medical-records/show/{id}
+        Route::post('/', [ApiMedicalRecordController::class, 'store']); //http://localhost:8000/api/v1.0/medical-records/ with form-data
+        Route::put('/{id}', [ApiMedicalRecordController::class, 'update']); //http://localhost:8000/api/v1.0/medical-records/ with form-data
+    });
+});
 
 //user authentication
 Route::post('/register', [ApiAuthenticationController::class, 'register']);
