@@ -37,8 +37,8 @@ class MedicalRecordService
             ])->orderBy($orderColumn, $orderDirection)
             ->when($search, function ($query) use($search){ //sorting query
 				$query->where(function ($query) use ($search) {
-					$query->where('doctor_name', 'like', '%' . $search . '%')
-						->orWhere('licence_number', 'like', '%' . $search . '%');
+					$query->where('doctor_name', 'like', '%'.$search.'%')
+						->orWhere('licence_number', 'like', '%'.$search.'%');
 				})
                 ->orWhereHas('createdUser', function($query) use($search){
                     $query->where('name', 'like', '%'.$search.'%');
@@ -48,12 +48,12 @@ class MedicalRecordService
                 })
 				->orWhere(function ($query) use ($search) {
 					$query->whereHas('doctor', function ($query) use ($search) {
-						$query->where('first_name', 'like', '%' . $search . '%')
-							->orWhere('last_name', 'like', '%' . $search . '%');
+						$query->where('first_name', 'like', '%'.$search.'%')
+							->orWhere('last_name', 'like', '%'.$search.'%');
 					})
 					->orWhereHas('patient', function ($query) use ($search) {
-						$query->where('first_name', 'like', '%' . $search . '%')
-							->orWhere('last_name', 'like', '%' . $search . '%');
+						$query->where('first_name', 'like', '%'.$search.'%')
+							->orWhere('last_name', 'like', '%'.$search.'%');
 					});
 				});
             })
