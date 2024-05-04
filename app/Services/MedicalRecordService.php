@@ -9,10 +9,11 @@ class MedicalRecordService
 {
     public function getPagination($data){
         $limit = isset($data['limit']) ? $data['limit'] : 10;
+        $search = isset($data['search']) ? $data['search'] : '';
         $orderColumn = 'created_at';
         $orderDirection = 'desc';
         $directionList = collect(['asc', 'desc']);
-        $columnList = collect(['id', 'created_at', 'modified_at', 'doctor_name', 'licence_numbers']);
+        $columnList = collect(['id', 'created_at', 'modified_at', 'doctor_name', 'licence_numbers', 'diagnosis']);
         if(isset($data['column']) && isset($data['direction'])){
             $direction = $data['direction'];
             $column = $data['column'];
@@ -33,7 +34,30 @@ class MedicalRecordService
             'updatedUser:id,name,email', 
             'doctor:id,first_name,middle_name,last_name,license_number,contact_number,email,gender,type',
             'patient:id,first_name,middle_name,last_name,license_number,contact_number,email,gender,type',
-            ])->orderBy($orderColumn, $orderDirection)->paginate($limit);
+            ])->orderBy($orderColumn, $orderDirection)
+            ->when($search, function ($query) use($search){ //sorting query
+				$query->where(function ($query) use ($search) {
+					$query->where('doctor_name', 'like', '%' . $search . '%')
+						->orWhere('licence_number', 'like', '%' . $search . '%');
+				})
+                ->orWhereHas('createdUser', function($query) use($search){
+                    $query->where('name', 'like', '%'.$search.'%');
+                })
+                ->orWhereHas('updatedUser', function($query) use($search){
+                    $query->where('name', 'like', '%'.$search.'%');
+                })
+				->orWhere(function ($query) use ($search) {
+					$query->whereHas('doctor', function ($query) use ($search) {
+						$query->where('first_name', 'like', '%' . $search . '%')
+							->orWhere('last_name', 'like', '%' . $search . '%');
+					})
+					->orWhereHas('patient', function ($query) use ($search) {
+						$query->where('first_name', 'like', '%' . $search . '%')
+							->orWhere('last_name', 'like', '%' . $search . '%');
+					});
+				});
+            })
+            ->paginate($limit);
         return $medicalRecords;
     }
     public function getAll(){
@@ -68,5 +92,10 @@ class MedicalRecordService
         $data = MedicalRecord::where('id', $id)
         ->update($data);
         return ($data) ? $data : null;
+    }
+
+    public function delete($id){
+        $data = MedicalRecord::where('id', $id)->delete();
+        return $data;
     }
 }

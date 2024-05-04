@@ -29,7 +29,7 @@ class ApiMedicalRecordController extends Controller
             $data = $medicalRecordService->getAll();
             return $this->successResponse(['data' => $data], 200);
         } catch (Throwable $e) {
-            return $this->errorResponse(['error' => $e, 500]);
+            return $this->errorResponse(['error' => 'Server Error', 500]);
         }
     }
 
@@ -56,7 +56,7 @@ class ApiMedicalRecordController extends Controller
             if($data)  return $this->successResponse(['data' => 'success'], 200);
             return $this->errorResponse(['error' => 'server error', 500]);
         } catch (Throwable $e) {
-            return $this->errorResponse(['error' => $e, 500]);
+            return $this->errorResponse(['error' => 'Server Error', 500]);
         }
     }
 
@@ -72,7 +72,7 @@ class ApiMedicalRecordController extends Controller
             $data = $medicalRecordService->findByPk($id);
             return $this->successResponse(['data' => $data], 200);
         } catch (Throwable $e) {
-            return $this->errorResponse(['error' => $e, 500]);
+            return $this->errorResponse(['error' => 'Server Error', 500]);
         }
     }
 
@@ -101,7 +101,7 @@ class ApiMedicalRecordController extends Controller
             if($data)  return $this->successResponse(['data' => 'success'], 200);
             return $this->errorResponse(['error' => 'server error', 500]);
         } catch (Throwable $e) {
-            return $this->errorResponse(['error' => $e, 500]);
+            return $this->errorResponse(['error' => 'Server Error', 500]);
         }
     }
 
@@ -111,8 +111,13 @@ class ApiMedicalRecordController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, MedicalRecordService $medicalRecordService)
     {
-        //
+        try {
+            $medicalRecordService->delete($id);
+            return $this->successResponse(['data' => 'success'], 200);
+        } catch (Throwable $e) {
+            return $this->errorResponse(['error' => 'Server Error', 500]);
+        }
     }
 }

@@ -37,6 +37,7 @@ Route::prefix('/v1.0/')->group(function () {
         Route::get('/show/{id}', [ApiMedicalRecordController::class, 'show']); //api end point http://localhost:8000/api/v1.0/medical-records/show/{id}
         Route::post('/', [ApiMedicalRecordController::class, 'store']); //http://localhost:8000/api/v1.0/medical-records/ with form-data
         Route::put('/{id}', [ApiMedicalRecordController::class, 'update']); //http://localhost:8000/api/v1.0/medical-records/ with form-data
+        Route::delete('/{id}', [ApiMedicalRecordController::class, 'destroy']); //http://localhost:8000/api/v1.0/medical-records/ with form-data
     });
 });
 
