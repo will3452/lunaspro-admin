@@ -11,15 +11,15 @@ use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Michielfb\Time\Time;
-class Appointments extends Resource
+
+class DoctorSchedule extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Appointments::class;
+    public static $model = \App\Models\DoctorSchedule::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -47,32 +47,12 @@ class Appointments extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Date::make('Date', 'date'),
-            Time::make('Time', 'time')->sortable(),
-            Text::make('Reason', 'reason')->sortable(),
-            Text::make('Remarks', 'reason')->sortable(),
-            Select::make('Type', 'type')
-            ->options([
-                'FollowUp' => 'Follow Up',
-                'CheckUp' => 'Check Up',
-            ]),
-            Boolean::make('Reschedule', 'isReschedule'),
-            Select::make('Status', 'status')
-            ->options([
-                'PENDING' => 'PENDING',
-                'APPROVED' => 'APPROVED',
-                'REJECTED' => 'REJECTED',
-                'DECLINED' => 'DECLINED',
-                'CANCELLED' => 'CANCELLED',
-            ]),
-            Date::make('Approved At', 'approved_at')->sortable(),
-            Date::make('Declined At', 'declined_at')->sortable(),
-            Date::make('Cancelled At', 'cancelled_at')->sortable(),
             BelongsTo::make('Profile', 'profile', Profile::class), 
+            ID::make('Day', 'day')->sortable(),
+            ID::make('Time', 'time')->sortable(),
 
         ];
     }
-
 
     /**
      * Get the cards available for the request.
