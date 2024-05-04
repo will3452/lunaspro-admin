@@ -24,6 +24,7 @@
         "laravel/sanctum": "^2.12",
         "laravel/tinker": "^2.5",
         "laravelwebdev/responsive": "^1.0",
+        "michielfb/laravel-nova-time-field": "^1.3",
         "optimistdigital/nova-settings": "^3.2",
         "richardkeep/nova-timenow": "^1.0",
         "runlinenl/nova-profile-tool": "^1.1",
