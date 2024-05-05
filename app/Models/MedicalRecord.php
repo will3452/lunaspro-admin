@@ -44,6 +44,8 @@ class MedicalRecord extends Model
         'diagnostic_codes' => 'array',
         'consent_forms_and_authorizations' => 'array',
         'discharge_summaries' => 'array',
+        'created_at' => 'datetime:Y-m-d h:i A',
+        'updated_at' => 'datetime:Y-m-d h:i A',
     ];
     public function createdUser () {
         return $this->belongsTo(User::class, 'created_id'); 
