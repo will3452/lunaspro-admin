@@ -89,6 +89,7 @@ class MedicalRecordService
     }
     
     public function update($data, $id){
+        (auth()->check()) ? $data['modified_id'] = Auth::id() : $data['modified_id'] = "1";
         $data = MedicalRecord::where('id', $id)
         ->update($data);
         return ($data) ? $data : null;
